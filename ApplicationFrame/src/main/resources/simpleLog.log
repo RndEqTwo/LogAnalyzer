@@ -1,0 +1,19 @@
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+10:40:00.184|[main]|INFO |de.jduwe.loganalyzer.logfilegenerator.LogGenerator|Hello WOrld
+{
+    "Name": "Jan",
+    "Alter": 29,
+    "Adresse": {
+        "Stadt": "Oberhausen",
+        "Strasse": "Katharienenstraße"
+    },
+    "Test": [
+        "A",
+        "B",
+        "C"
+    ]
+}

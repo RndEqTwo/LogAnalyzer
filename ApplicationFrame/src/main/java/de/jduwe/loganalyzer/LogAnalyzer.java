@@ -1,59 +1,77 @@
 package de.jduwe.loganalyzer;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javafx.collections.ObservableList;
+import org.pf4j.DefaultPluginManager;
+import org.pf4j.PluginManager;
+
+import java.io.*;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogAnalyzer {
 
-    private String regexFilter = "\\d{2}:\\d{2}:\\d{2}.\\d{3}\\|\\[.+\\]\\|[A-Z]+\\s*\\|\\w+\\|.+";
+    private String regexFilter = "\\d{2}:\\d{2}:\\d{2}.\\d{3}\\|[^|]*\\|[^|]*\\|[^|]*\\|.*";
     private int ignoreLines = 1;
+    private LogAnalyzerPluginsModel pluginsModel;
+    private IEventManager eventManager;
+
+    public LogAnalyzer(IEventManager eventManager, LogAnalyzerPluginsModel pluginsModel) {
+        this.eventManager = eventManager;
+        this.pluginsModel = pluginsModel;
+        loadPlugins();
+    }
+
+    private void loadPlugins() {
+        PluginManager pluginManager = new DefaultPluginManager(Paths.get("Plugins"));
+        pluginManager.loadPlugins();
+        pluginManager.startPlugins();
+
+        List<ILogAnalyzerPluginFactory> pluginFactories = pluginManager.getExtensions(ILogAnalyzerPluginFactory.class);
+        for(ILogAnalyzerPluginFactory pluginFactory : pluginFactories){
+            pluginFactory.setEventManager(eventManager);
+            pluginsModel.addPluginFactory(pluginFactory);
+        }
+    }
 
     public List<String> initialScan(List<String> lines){
         for (int i = ignoreLines; i< lines.size(); i++){
             if(!lines.get(i).matches(regexFilter)){
-                String currentLine = lines.get(i);
-                String previousLine = lines.get(i-1);
                 lines.set(i-1, lines.get(i-1)  + lines.get(i).replaceAll("\\s+", ""));
                 lines.remove(i);
                 i--;
             }
         }
-        writeToFile(lines, "output.txt");
         return lines;
     }
 
-    public ALogFile evalFilters(ActiveFilterPlugins activeFilterPlugins, ALogFile logFile){
-
-        for (LogAnalyzerFilterPlugin plugin : activeFilterPlugins.getActivePlugins()){
-            logFile = plugin.filter(logFile);
+    public List<String> readFromFile(String pathToFile){
+        List<String> lines = new ArrayList<>();
+        try (InputStream inputStream = new FileInputStream(pathToFile);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)){
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return logFile;
+        return initialScan(lines);
     }
 
-    private void writeToFile(List<String> lines, String fileName){
-
-        // Delete the file if it exists
-        File file = new File(fileName);
-        if (file.exists()) {
-            if (file.delete()) {
-                System.out.println("Existing file deleted successfully.");
-            } else {
-                System.err.println("Failed to delete the existing file.");
-            }
+    public void evalFilters(ObservableList<ILogLine> logFile){
+        for(ILogLine line : logFile){
+            line.visibility().set(true);
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (String str : lines) {
-                writer.write(str);
-                writer.newLine();
+        for (ILogAnalyzerFilterPlugin plugin : pluginsModel.getFilterPlugins()){
+            for(ILogLine line : logFile){
+                line.visibility().set(!plugin.filter(line.getLineContent()));
             }
-            System.out.println("Strings successfully written to the file.");
-        } catch (IOException e) {
-            System.err.println("Error writing strings to the file: " + e.getMessage());
+            //logFile.removeIf(line -> plugin.filter(line));
         }
+
     }
 
 }

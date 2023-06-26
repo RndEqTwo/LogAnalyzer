@@ -9,19 +9,19 @@ import java.awt.*;
 
 
 public class ConfigView extends VBox {
-    private CheckBox checkbox;
+    private CheckBox removeLogPrefix;
 
     public ConfigView() {
         Label label = new Label("Filter Json?");
-        checkbox = new CheckBox("Json");
+        removeLogPrefix = new CheckBox("Json");
 
-        getChildren().addAll(label, checkbox);
+        getChildren().addAll(label, removeLogPrefix);
         setAlignment(Pos.CENTER);
 
     }
 
     public boolean getCheckboxValue(){
-        return checkbox.isSelected();
+        return removeLogPrefix.isSelected();
     }
 
 }

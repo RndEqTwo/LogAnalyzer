@@ -6,12 +6,13 @@ import javafx.scene.layout.Region;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringFinderPlugin implements LogAnalyzerFinderPlugin {
+public class StringFinderPlugin implements ILogAnalyzerFinderPlugin {
 
     private String searchText;
-    private StringFinderResult lastResult;
+    private IEventManager eventManager;
 
-    public StringFinderPlugin(String searchText) {
+    public StringFinderPlugin(IEventManager eventManager, String searchText) {
+        this.eventManager = eventManager;
         this.searchText = searchText;
     }
 
@@ -21,7 +22,7 @@ public class StringFinderPlugin implements LogAnalyzerFinderPlugin {
     }
 
     @Override
-    public LogAnalyzerPluginFactory getFactoryInstance() {
+    public ILogAnalyzerPluginFactory getFactoryInstance() {
         return null;
     }
 
@@ -31,22 +32,14 @@ public class StringFinderPlugin implements LogAnalyzerFinderPlugin {
     }
 
     @Override
-    public FinderResult find(ALogFile logFile) {
+    public Region find(List<ILogLine> logFile) {
+        List<ILogLine> foundLines = new ArrayList<>();
 
-        List<AFinderResultEntry> foundEntries = new ArrayList<>();
-
-        for (int i = 0; i < logFile.getLines().size(); i++){
-            if (logFile.getLines().get(i).contains(searchText)){
-                foundEntries.add(new StringFinderResultEntry(i, i));
+        for (ILogLine line : logFile){
+            if(line.visibility().get() && line.getLineContent().contains(searchText)){
+                foundLines.add(line);
             }
         }
-
-        lastResult = new StringFinderResult(foundEntries);
-        return lastResult;
-    }
-
-    @Override
-    public Region getFinderShowArea() {
-        return new FinderView(lastResult);
+        return new FinderView(eventManager, foundLines);
     }
 }

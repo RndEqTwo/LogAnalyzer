@@ -1,9 +1,7 @@
-de\jduwe\loganalyzer\FinderResultEntry.class
-de\jduwe\loganalyzer\ALogFile.class
-de\jduwe\loganalyzer\FinderResult.class
-de\jduwe\loganalyzer\LogAnalyzerFilterPlugin.class
-de\jduwe\loganalyzer\LogAnalyzerPlugin.class
-de\jduwe\loganalyzer\LogAnalyzerFinderPlugin.class
-de\jduwe\loganalyzer\LogFile.class
-de\jduwe\loganalyzer\AFinderResultEntry.class
-de\jduwe\loganalyzer\LogAnalyzerPluginFactory.class
+de\jduwe\loganalyzer\ILogAnalyzerFinderPlugin.class
+de\jduwe\loganalyzer\ILogAnalyzerFilterPlugin.class
+de\jduwe\loganalyzer\ILogAnalyzerPlugin.class
+de\jduwe\loganalyzer\EventTypes.class
+de\jduwe\loganalyzer\IEventManager.class
+de\jduwe\loganalyzer\ILogLine.class
+de\jduwe\loganalyzer\ILogAnalyzerPluginFactory.class
