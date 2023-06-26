@@ -1,15 +1,17 @@
 package de.jduwe.loganalyzer.stringplugin;
 
-import de.jduwe.loganalyzer.LogAnalyzerFilterPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerFinderPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerPluginFactory;
+import de.jduwe.loganalyzer.IEventManager;
+import de.jduwe.loganalyzer.ILogAnalyzerFilterPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerFinderPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerPluginFactory;
 import javafx.scene.layout.Region;
 import org.pf4j.Extension;
 
 @Extension
-public class StringPluginFactory implements LogAnalyzerPluginFactory {
+public class StringPluginFactory implements ILogAnalyzerPluginFactory {
 
     private ConfigView configView;
+    private IEventManager eventManager;
 
     @Override
     public String getName() {
@@ -24,6 +26,11 @@ public class StringPluginFactory implements LogAnalyzerPluginFactory {
     @Override
     public String getDescription() {
         return "Dieses Plugin filtert jede Zeile heraus die nicht den konfigurierbaren String enthält";
+    }
+
+    @Override
+    public void setEventManager(IEventManager eventManager) {
+        this.eventManager = eventManager;
     }
 
     @Override
@@ -43,12 +50,12 @@ public class StringPluginFactory implements LogAnalyzerPluginFactory {
     }
 
     @Override
-    public LogAnalyzerFilterPlugin createFilterPlugin() {
-        return new StringFilterPlugin(configView.getFilterText());
+    public ILogAnalyzerFilterPlugin createFilterPlugin() {
+        return new StringFilterPlugin(eventManager, configView.getFilterText());
     }
 
     @Override
-    public LogAnalyzerFinderPlugin createFinderPlugin() {
-        return new StringFinderPlugin(configView.getFilterText());
+    public ILogAnalyzerFinderPlugin createFinderPlugin() {
+        return new StringFinderPlugin(eventManager, configView.getFilterText());
     }
 }

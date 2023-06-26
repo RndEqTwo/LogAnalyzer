@@ -1,14 +1,23 @@
 package de.jduwe.loganalyzer.jsonplugin;
 
-import de.jduwe.loganalyzer.ALogFile;
-import de.jduwe.loganalyzer.LogAnalyzerFilterPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerPluginFactory;
+import de.jduwe.loganalyzer.IEventManager;
+import de.jduwe.loganalyzer.ILogAnalyzerFilterPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerPluginFactory;
 import javafx.scene.layout.Region;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import de.jduwe.loganalyzer.jsonplugin.antlr.*;
 
-import java.util.regex.Pattern;
+public class JsonFilterPlugin implements ILogAnalyzerFilterPlugin {
 
-public class JsonFilterPlugin implements LogAnalyzerFilterPlugin {
+    private JsonAnalyzer analyzer;
+    private IEventManager eventManager;
 
+    public JsonFilterPlugin(IEventManager eventManager) {
+        analyzer = new JsonAnalyzer();
+        this.eventManager = eventManager;
+    }
 
     @Override
     public String getDisplayName() {
@@ -16,7 +25,7 @@ public class JsonFilterPlugin implements LogAnalyzerFilterPlugin {
     }
 
     @Override
-    public LogAnalyzerPluginFactory getFactoryInstance() {
+    public ILogAnalyzerPluginFactory getFactoryInstance() {
         return null;
     }
 
@@ -26,14 +35,7 @@ public class JsonFilterPlugin implements LogAnalyzerFilterPlugin {
     }
 
     @Override
-    public ALogFile filter(ALogFile logFile) {
-
-        String regex = "\\{.*\\}";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-
-        logFile.getLines().removeIf(element -> !pattern.matcher(element).find());
-
-
-        return logFile;
+    public boolean filter(String line) {
+       return analyzer.parse(line) == null;
     }
 }

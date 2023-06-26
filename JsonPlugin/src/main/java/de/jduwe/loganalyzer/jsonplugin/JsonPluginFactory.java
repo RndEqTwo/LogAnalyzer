@@ -1,14 +1,16 @@
 package de.jduwe.loganalyzer.jsonplugin;
 
-import de.jduwe.loganalyzer.LogAnalyzerFilterPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerFinderPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerPluginFactory;
+import de.jduwe.loganalyzer.IEventManager;
+import de.jduwe.loganalyzer.ILogAnalyzerFilterPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerFinderPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerPluginFactory;
 import javafx.scene.layout.Region;
 import org.pf4j.Extension;
 
 @Extension
-public class JsonPluginFactory implements LogAnalyzerPluginFactory {
+public class JsonPluginFactory implements ILogAnalyzerPluginFactory {
     private ConfigView lastUsedView;
+    private IEventManager eventManager;
 
     @Override
     public String getName() {
@@ -23,6 +25,11 @@ public class JsonPluginFactory implements LogAnalyzerPluginFactory {
     @Override
     public String getDescription() {
         return "Ein Json Plugin";
+    }
+
+    @Override
+    public void setEventManager(IEventManager eventManager) {
+        this.eventManager = eventManager;
     }
 
     @Override
@@ -42,12 +49,12 @@ public class JsonPluginFactory implements LogAnalyzerPluginFactory {
     }
 
     @Override
-    public LogAnalyzerFilterPlugin createFilterPlugin() {
-        return new JsonFilterPlugin();
+    public ILogAnalyzerFilterPlugin createFilterPlugin() {
+        return new JsonFilterPlugin(eventManager);
     }
 
     @Override
-    public LogAnalyzerFinderPlugin createFinderPlugin() {
-        return null;
+    public ILogAnalyzerFinderPlugin createFinderPlugin() {
+        return new JsonFinderPlugin(eventManager);
     }
 }

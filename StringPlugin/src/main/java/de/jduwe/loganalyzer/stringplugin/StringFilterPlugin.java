@@ -1,18 +1,20 @@
 package de.jduwe.loganalyzer.stringplugin;
 
-import de.jduwe.loganalyzer.ALogFile;
-import de.jduwe.loganalyzer.LogAnalyzerFilterPlugin;
-import de.jduwe.loganalyzer.LogAnalyzerPluginFactory;
+import de.jduwe.loganalyzer.IEventManager;
+import de.jduwe.loganalyzer.ILogAnalyzerFilterPlugin;
+import de.jduwe.loganalyzer.ILogAnalyzerPluginFactory;
 import javafx.scene.layout.Region;
 import org.pf4j.Extension;
 
 
 @Extension
-public class StringFilterPlugin implements LogAnalyzerFilterPlugin {
+public class StringFilterPlugin implements ILogAnalyzerFilterPlugin {
 
     private String filterText;
+    private IEventManager eventManager;
 
-    public StringFilterPlugin(String filterText) {
+    public StringFilterPlugin(IEventManager eventManager, String filterText) {
+        this.eventManager = eventManager;
         this.filterText = filterText;
     }
 
@@ -22,7 +24,7 @@ public class StringFilterPlugin implements LogAnalyzerFilterPlugin {
     }
 
     @Override
-    public LogAnalyzerPluginFactory getFactoryInstance() {
+    public ILogAnalyzerPluginFactory getFactoryInstance() {
         return null;
     }
 
@@ -34,8 +36,7 @@ public class StringFilterPlugin implements LogAnalyzerFilterPlugin {
     }
 
     @Override
-    public ALogFile filter(ALogFile logFile) {
-        logFile.getLines().removeIf(element -> !element.contains(filterText));
-        return logFile;
+    public boolean filter(String line) {
+        return !line.contains(filterText);
     }
 }

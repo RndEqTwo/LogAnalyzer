@@ -1,9 +1,10 @@
-C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\PluginFactoryRegistry.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogAnalyzerFxApplication.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogAnalyzerPluginsModel.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\Main.java
-C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\AppConfig.java
-C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\OldChip.java
-C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\ActiveFilterPlugins.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\Chip.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogAnalyzer.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogFileModel.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogListView.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\EventManager.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\LogLine.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\ApplicationFrame\src\main\java\de\jduwe\loganalyzer\MainWindowController.java
