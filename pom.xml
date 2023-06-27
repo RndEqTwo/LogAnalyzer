@@ -21,6 +21,7 @@
         <module>JsonPlugin</module>
         <module>StringPlugin</module>
         <module>LogFileGenerator</module>
+        <module>LogLevelPlugin</module>
     </modules>
 
 </project>

@@ -36,6 +36,6 @@ public class JsonFilterPlugin implements ILogAnalyzerFilterPlugin {
 
     @Override
     public boolean filter(String line) {
-       return analyzer.parse(line) == null;
+       return analyzer.parse(line) != null;
     }
 }

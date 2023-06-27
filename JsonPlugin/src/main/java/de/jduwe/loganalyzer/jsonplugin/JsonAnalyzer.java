@@ -12,7 +12,7 @@ public class JsonAnalyzer {
 
     public ParseTree parse(String line) {
         int jsonIndex = line.indexOf('{');
-        if (jsonIndex > 0) {
+        if (jsonIndex >= 0) {
             String jsonGuess = line.substring(jsonIndex);
             CharStream input = CharStreams.fromString(jsonGuess);
 

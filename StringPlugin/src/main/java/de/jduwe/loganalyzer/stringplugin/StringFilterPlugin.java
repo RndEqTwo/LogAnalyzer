@@ -37,6 +37,6 @@ public class StringFilterPlugin implements ILogAnalyzerFilterPlugin {
 
     @Override
     public boolean filter(String line) {
-        return !line.contains(filterText);
+        return line.contains(filterText);
     }
 }

@@ -67,9 +67,8 @@ public class LogAnalyzer {
 
         for (ILogAnalyzerFilterPlugin plugin : pluginsModel.getFilterPlugins()){
             for(ILogLine line : logFile){
-                line.visibility().set(!plugin.filter(line.getLineContent()));
+                line.visibility().set(plugin.filter(line.getLineContent()));
             }
-            //logFile.removeIf(line -> plugin.filter(line));
         }
 
     }

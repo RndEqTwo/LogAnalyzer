@@ -4,10 +4,12 @@ C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganal
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\JsonAnalyzer.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\JsonFilterPlugin.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\antlr\JSONBaseListener.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\MyJsonVisitor.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\antlr\JSONListener.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\FinderResultShowArea.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\FinderEntry.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\antlr\JSONParser.java
+C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\CustomJsonVisitor.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\ConfigView.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\antlr\JSONVisitor.java
 C:\Users\jadu\IdeaProjects\LogAnalyzer\JsonPlugin\src\main\java\de\jduwe\loganalyzer\jsonplugin\JsonGrammarListener.java

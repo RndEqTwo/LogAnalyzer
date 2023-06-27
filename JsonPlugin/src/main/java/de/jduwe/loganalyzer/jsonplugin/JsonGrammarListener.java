@@ -1,11 +1,10 @@
 package de.jduwe.loganalyzer.jsonplugin;
 
-import de.jduwe.loganalyzer.jsonplugin.antlr.JSONBaseListener;
-import de.jduwe.loganalyzer.jsonplugin.antlr.JSONParser;
 import javafx.scene.control.TreeItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import de.jduwe.loganalyzer.jsonplugin.antlr.*;
 
 public class JsonGrammarListener extends JSONBaseListener {
 

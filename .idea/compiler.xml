@@ -10,6 +10,7 @@
         <module name="PluginCommon" />
         <module name="ApplicationFrame" />
         <module name="LogFileGenerator" />
+        <module name="LogLevelPlugin" />
         <module name="JsonPlugin" />
       </profile>
     </annotationProcessing>
