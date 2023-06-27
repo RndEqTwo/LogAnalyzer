@@ -55,7 +55,7 @@ public class LogLevelPluginFactory implements ILogAnalyzerPluginFactory {
 
     @Override
     public ILogAnalyzerFilterPlugin createFilterPlugin() {
-        return null;
+        return new LogLevelFilterPlugin(lastUsedView.getFilterTexts());
     }
 
     @Override
