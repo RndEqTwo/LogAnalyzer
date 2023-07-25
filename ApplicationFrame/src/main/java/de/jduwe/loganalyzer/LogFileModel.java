@@ -19,15 +19,10 @@ public class LogFileModel {
         return logFile;
     }
 
-    public void addLogLine(ILogLine line){
-        getLogFile().add(line);
-    }
-
-    public void setLogFile(List<String> logFileList, Consumer<ILogLine> callback){
+    public void setLogFile(List<ILogLine> logFileList, Consumer<ILogLine> callback){
         getLogFile().clear();
-
         for(int i = 0; i<logFileList.size(); i++){
-            ILogLine line = new LogLine(logFileList.get(i), i);
+            ILogLine line = logFileList.get(i);
             line.visibility().addListener((observable, oldValue, newValue) -> callback.accept(line));
             getLogFile().add(line);
         }

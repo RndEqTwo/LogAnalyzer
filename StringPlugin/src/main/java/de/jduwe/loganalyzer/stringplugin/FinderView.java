@@ -33,7 +33,7 @@ public class FinderView extends ListView<ILogLine> {
         setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
                 ILogLine logline = getSelectionModel().getSelectedItem();
-                eventManager.triggerEvent(EventTypes.SELECT_ROW, this, logline.getIndex());
+                eventManager.triggerEvent(EventTypes.SELECT_ROW, this, logline);
             }
         });
     }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -18,8 +19,8 @@ public class LogGenerator {
         Random rand = new Random();
 
         try {
-            JsonFile = new String(Files.readAllBytes(Paths.get("src/main/resources/sample.json")));
-            xmlFile = new String(Files.readAllBytes(Paths.get("src/main/resources/sample.xml")));
+            JsonFile = new String(Files.readAllBytes(Paths.get("C:/Users/jadu/IdeaProjects/LogAnalyzer/LogFileGenerator/src/main/resources/sample.json")));
+            xmlFile = new String(Files.readAllBytes(Paths.get("C:/Users/jadu/IdeaProjects/LogAnalyzer/LogFileGenerator/src/main/resources/sample.xml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +36,14 @@ public class LogGenerator {
                 logger.debug(xmlFile);
                 System.out.println(randomNumber);
             }
+            else if (randomNumber > 0.02 && randomNumber <= 0.05){
+                logger.error("ERROR");
+                System.out.println(randomNumber);
+            }
+            else if (randomNumber > 0.05 && randomNumber <= 0.1){
+                logger.warn("Warning");
+                System.out.println(randomNumber);
+            }
             else{
                 logger.info(generateLogText());
             }
@@ -44,6 +53,6 @@ public class LogGenerator {
     }
 
     private static String generateLogText(){
-        return "Hello WOrld";
+        return "Normal Operation";
     }
 }

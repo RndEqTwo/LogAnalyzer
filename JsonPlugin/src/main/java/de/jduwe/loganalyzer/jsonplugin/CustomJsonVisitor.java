@@ -18,18 +18,6 @@ public class CustomJsonVisitor extends JSONBaseVisitor<Void> {
         return parentItem;
     }
 
-    /*
-    @Override
-    protected TreeItem<String> aggregateResult(TreeItem<String> aggregate, TreeItem<String> nextResult) {
-        // Example: Return the result of the current visitation if it's not null
-        if (nextResult != null) {
-            return nextResult;
-        }
-        // If the result is null, return the accumulated result as-is
-        return aggregate;
-    }
-    */
-
     @Override
     public Void visitObject(JSONParser.ObjectContext ctx) {
 

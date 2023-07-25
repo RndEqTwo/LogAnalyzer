@@ -28,5 +28,4 @@ public class EventManager implements IEventManager{
             callback.accept(arg1, arg2);
         }
     }
-
 }

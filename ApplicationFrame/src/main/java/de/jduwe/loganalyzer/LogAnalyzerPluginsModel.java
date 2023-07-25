@@ -8,32 +8,32 @@ import java.util.List;
 
 public class LogAnalyzerPluginsModel {
 
-    private List<ILogAnalyzerPluginFactory> pluginFactoryList;
-    private ILogAnalyzerPluginFactory activePluginFactory;
-    private ObservableList<ILogAnalyzerFilterPlugin> filterPlugins;
-    private ILogAnalyzerFinderPlugin activeFinderPlugin;
+    private List<ILogAnalyzerPlugin> pluginFactoryList;
+    private ILogAnalyzerPlugin activePluginFactory;
+    private ObservableList<ILogAnalyzerFilter> filterPlugins;
+    private ILogAnalyzerFinder activeFinderPlugin;
     private EventManager eventManager;
 
     public LogAnalyzerPluginsModel(EventManager eventManager) {
         this.eventManager = eventManager;
     }
 
-    public List<ILogAnalyzerPluginFactory> getPluginFactoryList() {
+    public List<ILogAnalyzerPlugin> getPluginFactoryList() {
         if(pluginFactoryList == null) {
             pluginFactoryList = new ArrayList<>();
         }
         return pluginFactoryList;
     }
 
-    public void addPluginFactory(ILogAnalyzerPluginFactory pluginFactory){
+    public void addPluginFactory(ILogAnalyzerPlugin pluginFactory){
         getPluginFactoryList().add(pluginFactory);
     }
 
-    public void setActivePluginFactory(ILogAnalyzerPluginFactory pluginFactory){
+    public void setActivePluginFactory(ILogAnalyzerPlugin pluginFactory){
         activePluginFactory = pluginFactory;
     }
 
-    public ObservableList<ILogAnalyzerFilterPlugin> getFilterPlugins(){
+    public ObservableList<ILogAnalyzerFilter> getFilterPlugins(){
         if(filterPlugins == null){
             filterPlugins = FXCollections.observableArrayList(new ArrayList<>());
         }
@@ -42,22 +42,22 @@ public class LogAnalyzerPluginsModel {
 
     public void CreateFilterPluginFromCurrentFactory(){
         if(activePluginFactory != null){
-            getFilterPlugins().add(activePluginFactory.createFilterPlugin());
+            getFilterPlugins().add(activePluginFactory.createFilter());
         }
     }
 
-    public void RemoveFilterPlugin(ILogAnalyzerFilterPlugin filterPlugin){
+    public void RemoveFilterPlugin(ILogAnalyzerFilter filterPlugin){
         getFilterPlugins().remove(filterPlugin);
         System.out.println(getFilterPlugins().size());
     }
 
-    public ILogAnalyzerFinderPlugin getActiveFinderPlugin(){
+    public ILogAnalyzerFinder getActiveFinderPlugin(){
         return activeFinderPlugin;
     }
 
     public void createActiveFinderPlugin(){
         if(activePluginFactory != null){
-            activeFinderPlugin = activePluginFactory.createFinderPlugin();
+            activeFinderPlugin = activePluginFactory.createFinder();
         }
     }
 

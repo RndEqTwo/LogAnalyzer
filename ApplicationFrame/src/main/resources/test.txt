@@ -1,9 +1,0 @@
-{
-  "name": "Jan",
-  "ort": "oberhausen"
-}
-
-{
-  "test": "Jan |",
-  "ort": "oberhausen"
-}

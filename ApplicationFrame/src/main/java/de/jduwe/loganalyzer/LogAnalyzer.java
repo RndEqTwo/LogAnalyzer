@@ -6,20 +6,40 @@ import org.pf4j.PluginManager;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LogAnalyzer {
 
-    private String regexFilter = "\\d{2}:\\d{2}:\\d{2}.\\d{3}\\|[^|]*\\|[^|]*\\|[^|]*\\|.*";
-    private int ignoreLines = 1;
+    private String regexFilter;
+    private int ignoreLines ;
     private LogAnalyzerPluginsModel pluginsModel;
     private IEventManager eventManager;
+    private Properties properties;
+    private List<String> regexGroups;
 
-    public LogAnalyzer(IEventManager eventManager, LogAnalyzerPluginsModel pluginsModel) {
+    public LogAnalyzer(IEventManager eventManager, LogAnalyzerPluginsModel pluginsModel, Properties properties) {
         this.eventManager = eventManager;
         this.pluginsModel = pluginsModel;
+        this.properties = properties;
+        regexFilter = properties.getProperty("loganalyzer.filter");
+        ignoreLines = Integer.parseInt(properties.getProperty("loganalyzer.ignorelines"));
+        analyzeRegexFilter();
         loadPlugins();
+    }
+
+    private void analyzeRegexFilter() {
+        List<String> regexGroups = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("\\(\\?<([\\w]+)>");
+        Matcher matcher = pattern.matcher(regexFilter);
+
+        while(matcher.find()){
+            String match = matcher.group(1);
+            regexGroups.add(match);
+        }
+        this.regexGroups = regexGroups;
     }
 
     private void loadPlugins() {
@@ -27,25 +47,40 @@ public class LogAnalyzer {
         pluginManager.loadPlugins();
         pluginManager.startPlugins();
 
-        List<ILogAnalyzerPluginFactory> pluginFactories = pluginManager.getExtensions(ILogAnalyzerPluginFactory.class);
-        for(ILogAnalyzerPluginFactory pluginFactory : pluginFactories){
+        List<ILogAnalyzerPlugin> pluginFactories = pluginManager.getExtensions(ILogAnalyzerPlugin.class);
+        for(ILogAnalyzerPlugin pluginFactory : pluginFactories){
             pluginFactory.setEventManager(eventManager);
+            pluginFactory.setProperties(properties);
             pluginsModel.addPluginFactory(pluginFactory);
         }
     }
 
-    public List<String> initialScan(List<String> lines){
+    public List<ILogLine> initialScan(List<String> lines){
+        List<ILogLine> logLines = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regexFilter);
+
         for (int i = ignoreLines; i< lines.size(); i++){
-            if(!lines.get(i).matches(regexFilter)){
-                lines.set(i-1, lines.get(i-1)  + lines.get(i).replaceAll("\\s+", ""));
-                lines.remove(i);
-                i--;
+            String line = lines.get(i);
+            Matcher matcher = pattern.matcher(line);
+
+            if(matcher.find()){
+                ILogLine logLine = new LogLine(line, i+1, regexGroups.get(regexGroups.size() -1));
+
+                for (String namedGroup : regexGroups){
+                    String groupContent = matcher.group(namedGroup);
+                    logLine.setLogInformation(namedGroup, groupContent);
+                }
+                logLines.add(logLine);
+            }
+            else {
+                ILogLine lastLine = logLines.get(logLines.size()-1);
+                lastLine.appendToLine(line);
             }
         }
-        return lines;
+        return logLines;
     }
 
-    public List<String> readFromFile(String pathToFile){
+    public List<ILogLine> readFromFile(String pathToFile){
         List<String> lines = new ArrayList<>();
         try (InputStream inputStream = new FileInputStream(pathToFile);
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -65,12 +100,11 @@ public class LogAnalyzer {
             line.visibility().set(true);
         }
 
-        for (ILogAnalyzerFilterPlugin plugin : pluginsModel.getFilterPlugins()){
+        for (ILogAnalyzerFilter plugin : pluginsModel.getFilterPlugins()){
             for(ILogLine line : logFile){
                 line.visibility().set(plugin.filter(line.getLineContent()));
             }
         }
-
     }
 
 }

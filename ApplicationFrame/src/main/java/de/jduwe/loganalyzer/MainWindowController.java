@@ -7,13 +7,17 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
@@ -22,6 +26,7 @@ public class MainWindowController implements Initializable {
     private LogAnalyzer logAnalyzer;
     private LogAnalyzerPluginsModel pluginsModel;
     private EventManager eventManager;
+    private Properties properties;
 
     @FXML
     LogListView logListView;
@@ -33,7 +38,10 @@ public class MainWindowController implements Initializable {
     FlowPane activePluginChips;
 
     @FXML
-    Pane PluginSettingsArea;
+    StackPane PluginSettingsArea;
+
+    @FXML
+    Label PluginNameLabel;
 
     @FXML
     Pane FinderShowArea;
@@ -48,10 +56,23 @@ public class MainWindowController implements Initializable {
 
     public MainWindowController() {
         initializeEventManager();
+        loadProperties();
         pluginsModel = new LogAnalyzerPluginsModel(eventManager);
-        logAnalyzer = new LogAnalyzer(eventManager, pluginsModel);
+        logAnalyzer = new LogAnalyzer(eventManager, pluginsModel, properties);
         logFileModel = new LogFileModel();
         logFileModel.getLogFile().addListener((ListChangeListener<ILogLine>) change -> updateLogViewer());
+    }
+
+    private void loadProperties() {
+        properties = new Properties();
+        try {
+            InputStream InputStream = MainWindowController.class.getClassLoader().getResourceAsStream("config.properties");
+            properties.load(InputStream);
+            InputStream.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeEventManager() {
@@ -60,8 +81,8 @@ public class MainWindowController implements Initializable {
         eventManager.registerEvent(EventTypes.LOAD_PLUGIN_INFO);
         eventManager.subscribe(EventTypes.SELECT_ROW, (eventInfo, eventData) -> {
             try {
-                int rowNumber = (int) eventData;
-                highlightLogRow(rowNumber);
+                ILogLine logLine = (ILogLine) eventData;
+                highlightLogRow(logLine);
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -79,22 +100,30 @@ public class MainWindowController implements Initializable {
         FindButton.visibleProperty().bind(findButtonActive);
         FilterButton.visibleProperty().bind(filterButtonActive);
 
-        for(ILogAnalyzerPluginFactory pluginFactory : pluginsModel.getPluginFactoryList()){
+        for(ILogAnalyzerPlugin pluginFactory : pluginsModel.getPluginFactoryList()){
             Button button = new Button(pluginFactory.getName());
-            button.setOnAction(event -> {
-                clearPluginSettingsArea();
-                pluginsModel.setActivePluginFactory(pluginFactory);
-                findButtonActive.set(pluginFactory.isFinder());
-                filterButtonActive.set(pluginFactory.isFilter());
-                PluginSettingsArea.getChildren().add(pluginFactory.createView());
-            });
+            button.setOnAction(event -> setupConfigView(pluginFactory));
+            //button.prefWidthProperty().bind(AvailablePluginsList.widthProperty());
+            button.setMaxWidth(Double.MAX_VALUE);
             AvailablePluginsList.getChildren().add(button);
         }
 
-        pluginsModel.getFilterPlugins().addListener((ListChangeListener<ILogAnalyzerFilterPlugin>) change -> {
+        pluginsModel.getFilterPlugins().addListener((ListChangeListener<ILogAnalyzerFilter>) change -> {
             logAnalyzer.evalFilters(logFileModel.getLogFile());
             syncActiveFilterPluginChips();
         });
+    }
+
+    private void setupConfigView(ILogAnalyzerPlugin pluginFactory){
+        clearPluginSettingsArea();
+        pluginsModel.setActivePluginFactory(pluginFactory);
+        findButtonActive.set(pluginFactory.isFinder());
+        filterButtonActive.set(pluginFactory.isFilter());
+        PluginNameLabel.textProperty().set(pluginFactory.getName());
+        Region configView = pluginFactory.createSettingsView();
+        if(configView != null){
+            PluginSettingsArea.getChildren().add(configView);
+        }
     }
 
     public void loadFromFile(){
@@ -112,7 +141,7 @@ public class MainWindowController implements Initializable {
 
     private void syncActiveFilterPluginChips(){
         List<Chip> chips = new ArrayList<>();
-        for (ILogAnalyzerFilterPlugin plugin : pluginsModel.getFilterPlugins()){
+        for (ILogAnalyzerFilter plugin : pluginsModel.getFilterPlugins()){
             Chip chip = new Chip(plugin);
             chip.SetButtonAction(event -> pluginsModel.RemoveFilterPlugin(plugin));
             chips.add(chip);
@@ -134,12 +163,13 @@ public class MainWindowController implements Initializable {
         clearPluginSettingsArea();
     }
 
-    private void highlightLogRow(int rowNumber){
-        logListView.getSelectionModel().select(rowNumber);
-        logListView.scrollTo(rowNumber);
+    private void highlightLogRow(ILogLine logLine){
+        logListView.getSelectionModel().select(logLine);
+        logListView.scrollTo(logLine);
     }
 
     private void clearPluginSettingsArea(){
+        PluginNameLabel.textProperty().set("");
         PluginSettingsArea.getChildren().clear();
         findButtonActive.set(false);
         filterButtonActive.set(false);

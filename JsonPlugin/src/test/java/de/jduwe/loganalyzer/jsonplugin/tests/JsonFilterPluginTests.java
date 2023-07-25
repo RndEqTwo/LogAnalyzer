@@ -1,7 +1,7 @@
 package de.jduwe.loganalyzer.jsonplugin.tests;
 
 import de.jduwe.loganalyzer.IEventManager;
-import de.jduwe.loganalyzer.jsonplugin.JsonFilterPlugin;
+import de.jduwe.loganalyzer.jsonplugin.JsonFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,16 +11,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 public class JsonFilterPluginTests {
 
     private String resourcesFolder;
-    private final JsonFilterPlugin pluginUnderTest;
+    private final JsonFilter pluginUnderTest;
 
     public JsonFilterPluginTests() {
         IEventManager eventManager = Mockito.mock(IEventManager.class);
+        Properties propertiesMock = Mockito.mock(Properties.class);
+        Mockito.when(propertiesMock.getProperty(Mockito.anyString())).thenReturn("Content");
 
-        this.pluginUnderTest = new JsonFilterPlugin(eventManager);
+        this.pluginUnderTest = new JsonFilter(eventManager, propertiesMock);
     }
 
     @Before

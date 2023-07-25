@@ -1,7 +1,0 @@
-de\jduwe\loganalyzer\ILogAnalyzerFinderPlugin.class
-de\jduwe\loganalyzer\ILogAnalyzerFilterPlugin.class
-de\jduwe\loganalyzer\ILogAnalyzerPlugin.class
-de\jduwe\loganalyzer\EventTypes.class
-de\jduwe\loganalyzer\IEventManager.class
-de\jduwe\loganalyzer\ILogLine.class
-de\jduwe\loganalyzer\ILogAnalyzerPluginFactory.class

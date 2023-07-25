@@ -10,11 +10,11 @@ import javafx.scene.layout.HBox;
 
 
 public class Chip extends HBox {
-    private ILogAnalyzerPlugin plugin;
+    private ILogAnalyzerFilter plugin;
     private Button button;
     private Label label;
 
-    public Chip(ILogAnalyzerPlugin plugin) {
+    public Chip(ILogAnalyzerFilter plugin) {
         this.plugin = plugin;
         label = new Label(plugin.getDisplayName());
         button = new Button("X");

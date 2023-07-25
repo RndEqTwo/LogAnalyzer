@@ -8,10 +8,20 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.util.Properties;
+
 public class JsonAnalyzer {
 
+    private Properties properties;
+
+    public JsonAnalyzer(Properties properties) {
+        this.properties = properties;
+    }
+
     public ParseTree parse(String line) {
-        int jsonIndex = line.indexOf('{');
+        int objectStart = line.indexOf('{');
+        int arrayStart = line.indexOf('[');
+        int jsonIndex = Math.min(objectStart, arrayStart);
         if (jsonIndex >= 0) {
             String jsonGuess = line.substring(jsonIndex);
             CharStream input = CharStreams.fromString(jsonGuess);
