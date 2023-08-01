@@ -3,8 +3,6 @@ package de.jduwe.loganalyzer.jsonplugin;
 import de.jduwe.loganalyzer.jsonplugin.antlr.JSONBaseVisitor;
 import de.jduwe.loganalyzer.jsonplugin.antlr.JSONParser;
 import javafx.scene.control.TreeItem;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.antlr.v4.runtime.tree.Tree;
 
 public class CustomJsonVisitor extends JSONBaseVisitor<Void> {
 

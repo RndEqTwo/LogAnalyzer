@@ -19,13 +19,5 @@ public class FinderResultShowArea extends TreeView<String> {
         }
         setRoot(rootItem);
         setShowRoot(false);
-        /*
-        setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
-                ILogLine logline = getSelectionModel().getSelectedItem();
-                eventManager.triggerEvent(EventTypes.SELECT_ROW, this, logline.getIndex());
-            }
-        });
-         */
     }
 }
