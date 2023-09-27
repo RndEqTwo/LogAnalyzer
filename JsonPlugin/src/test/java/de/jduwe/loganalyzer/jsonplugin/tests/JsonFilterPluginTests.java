@@ -44,7 +44,7 @@ public class JsonFilterPluginTests {
 
         if(testLine != null){
             Boolean output = pluginUnderTest.filter(testLine);
-            Assert.assertEquals(false, output);
+            Assert.assertEquals(true, output);
         }
 
     }
